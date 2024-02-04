@@ -2,8 +2,6 @@
     "compilerOptions": {
         "lib": [
             "ES2020",
-            "DOM",
-            "DOM.Iterable"
         ],
         "composite": true,
         "skipLibCheck": true,
