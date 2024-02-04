@@ -1,8 +1,10 @@
+import { DraggableBox } from "./components/DraggableBox";
+
 export function App() {
     return (
         <>
             <div>
-                <ExamplePage />
+                <DraggableBox id={"55"} />
             </div>
         </>
     );
