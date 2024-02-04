@@ -1,4 +1,4 @@
-import { CSSProperties, useRef, useState } from 'react';
+import { CSSProperties, forwardRef, useRef, useState } from 'react';
 import Xarrow, { useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
 import Draggable from 'react-draggable';
 
@@ -28,24 +28,38 @@ const boxStyle: CSSProperties = {
     justifyContent: 'center',
 };
 
-const DraggableBox = ({ box }: { box: BoxPos; }) => {
-    const updateXarrow = useXarrow();
+export function mergeRefs<T = any>(refs: Array<React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null>): React.RefCallback<T> {
+    return (value) => {
+        refs.forEach((ref) => {
+            if (typeof ref === "function") {
+                ref(value);
+            } else if (ref != null) {
+                (ref as React.MutableRefObject<T | null>).current = value;
+            }
+        });
+    };
+}
 
-    // console.log(box.id, 'render');
-    const ref = useRef<HTMLDivElement>(null);
+const DraggableBox = forwardRef<HTMLDivElement, { box: BoxPos; }>(
+    ({ box }, outRef) => {
+        const updateXarrow = useXarrow();
 
-    return (
-        <Draggable
-            onDrag={updateXarrow}
-            onStop={updateXarrow}
-            nodeRef={ref}
-        >
-            <div ref={ref} id={box.id} style={{ ...boxStyle, position: 'absolute', left: box.x, top: box.y }}>
-                {box.id}
-            </div>
-        </Draggable>
-    );
-};
+        // console.log(box.id, 'render');
+        const ref = useRef<HTMLDivElement>(null);
+
+        return (
+            <Draggable
+                onDrag={updateXarrow}
+                onStop={updateXarrow}
+                nodeRef={ref}
+            >
+                <div ref={mergeRefs([ref, outRef])} id={box.id} style={{ ...boxStyle, position: 'absolute', left: box.x, top: box.y }}>
+                    {box.id}
+                </div>
+            </Draggable>
+        );
+    }
+);
 
 type BoxPos = { id: string, x: number, y: number; };
 
