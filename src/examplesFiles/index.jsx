@@ -7,11 +7,11 @@ import Playground from './Playground/Playground';
 // import TestExample from './TestExample';
 
 export default {
-  SimpleExample: { component: SimpleExample },
-  FewArrows: { component: FewArrows },
-  CustomizeArrow: { component: CustomizeArrow },
-  // test: { component: TestExample },
-  differentScrolls: { component: Example4 },
-  // ZindexExample: {  component: ZindexExample },
-  Playground: { component: Playground },
+    SimpleExample: { component: SimpleExample },
+    FewArrows: { component: FewArrows },
+    CustomizeArrow: { component: CustomizeArrow },
+    // test: { component: TestExample },
+    differentScrolls: { component: Example4 },
+    // ZindexExample: {  component: ZindexExample },
+    Playground: { component: Playground },
 };
