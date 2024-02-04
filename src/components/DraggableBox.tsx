@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useRef } from 'react';
 import { useXarrow } from 'react-xarrows';
 import Draggable from 'react-draggable';
 
@@ -14,21 +14,27 @@ export const boxStyle = {
     justifyContent: 'center',
 } as const;
 
-export const DraggableBox = ({ initialOffset = undefined, reference = undefined, id = undefined, ...style }:
-    {
-        reference?: React.RefObject<HTMLDivElement> | undefined;
-        initialOffset?: { x: number; y: number; } | undefined;
-    }
+export const DraggableBox = ({ initialOffset = undefined, id, ...style }: {
+    initialOffset?: { x: number; y: number; } | undefined;
+}
     & HTMLAttributes<HTMLDivElement>) => {
 
+    const ref = useRef<HTMLDivElement>(null);
+
     const updateXarrow = useXarrow();
+
     let moreStyle = {};
     if (initialOffset) {
         moreStyle = { position: 'absolute', left: initialOffset.x, top: initialOffset.y };
     }
+
     return (
-        <Draggable onDrag={updateXarrow} onStop={updateXarrow}>
-            <div ref={reference} id={id} style={{ ...boxStyle, ...style, ...moreStyle }}>
+        <Draggable
+            onDrag={updateXarrow}
+            onStop={updateXarrow}
+            nodeRef={ref}
+        >
+            <div ref={ref} style={{ ...boxStyle, ...style, ...moreStyle }}>
                 {id}
             </div>
         </Draggable>
