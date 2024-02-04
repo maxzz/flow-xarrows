@@ -1,4 +1,4 @@
-import { CSSProperties, Ref, RefObject, useRef, useState } from 'react';
+import { CSSProperties, Ref, RefObject, forwardRef, useRef, useState } from 'react';
 import Xarrow, { useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
 import Draggable from 'react-draggable';
 //import { boxStyle, canvasStyle } from '../ExamplePage';
@@ -22,31 +22,35 @@ const boxStyle: CSSProperties = {
     color: 'black',
 };
 
-const DraggableBox = ({ box }: { box: BoxPos; }) => {
+const DraggableBox = forwardRef<HTMLDivElement, { box: BoxPos; }>(({ box }, ref) => {
     const updateXarrow = useXarrow();
-    
-    console.log(box.id, 'render');
+
+   // console.log(box.id, 'render');
 
     return (
-        <Draggable onDrag={updateXarrow} onStop={updateXarrow}>
-            <div id={box.id} style={{ ...boxStyle, position: 'absolute', left: box.x, top: box.y }}>
+        <Draggable
+            onDrag={updateXarrow}
+            onStop={updateXarrow}
+            nodeRef={ref}
+        >
+            <div ref={ref} id={box.id} style={{ ...boxStyle, position: 'absolute', left: box.x, top: box.y }}>
                 {box.id}
             </div>
         </Draggable>
     );
-};
+});
 
-type BoxPos = { id: string, x: number, y: number, reference: RefObject<HTMLElement>; };
+type BoxPos = { id: string, x: number, y: number, reference: RefObject<HTMLDivElement>; };
 
 export function FewArrows() {
 
-    const boxes: BoxPos[] = [
+    const [boxes] = useState<BoxPos[]>(() => ([
         { id: 'box1', x: 50, y: 20, reference: useRef(null) },
         { id: 'box2', x: 20, y: 250, reference: useRef(null) },
         { id: 'box3', x: 350, y: 80, reference: useRef(null) },
-    ];
+    ]));
 
-    const [lines] = useState<xarrowPropsType[]>([
+    const [lines] = useState<xarrowPropsType[]>(() => ([
         {
             start: 'box1',
             end: 'box2',
@@ -78,7 +82,7 @@ export function FewArrows() {
             // endAnchor: ["right", {position: "left", offset: {y: -10}}],
             dashness: { animation: 1 },
         },
-    ]);
+    ]));
 
     return (<>
         <h3>
@@ -93,7 +97,7 @@ export function FewArrows() {
             <Xwrapper>
 
                 {boxes.map((box, i) => (
-                    <DraggableBox box={box} key={i} />
+                    <DraggableBox ref={box.reference} box={box} key={i} />
                 ))}
 
                 {lines.map((line, i) => (
