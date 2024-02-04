@@ -1,31 +1,38 @@
-import { CSSProperties, Ref, RefObject, forwardRef, useRef, useState } from 'react';
+import { CSSProperties, useRef, useState } from 'react';
 import Xarrow, { useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
 import Draggable from 'react-draggable';
-//import { boxStyle, canvasStyle } from '../ExamplePage';
 
 const canvasStyle: CSSProperties = {
     position: 'relative',
-    height: '20vh',
-    background: 'white',
+    height: '420px',
+    background: 'ghostwhite',
+    color: 'red',
+
     display: 'flex',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
+    justifyContent: 'space-evenly',
 };
 
 const boxStyle: CSSProperties = {
     position: 'relative',
-    border: '1px #999 solid',
-    borderRadius: '10px',
-    textAlign: 'center',
+    padding: '12px 4px',
     width: '100px',
     height: '30px',
-    color: 'black',
+    borderRadius: '6px',
+    border: '1px #999 solid',
+
+    userSelect: 'none',
+    cursor: 'move',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
 };
 
-const DraggableBox = forwardRef<HTMLDivElement, { box: BoxPos; }>(({ box }, ref) => {
+const DraggableBox = ({ box }: { box: BoxPos; }) => {
     const updateXarrow = useXarrow();
 
-   // console.log(box.id, 'render');
+    // console.log(box.id, 'render');
+    const ref = useRef<HTMLDivElement>(null);
 
     return (
         <Draggable
@@ -38,48 +45,45 @@ const DraggableBox = forwardRef<HTMLDivElement, { box: BoxPos; }>(({ box }, ref)
             </div>
         </Draggable>
     );
-});
+};
 
-type BoxPos = { id: string, x: number, y: number, reference: RefObject<HTMLDivElement>; };
+type BoxPos = { id: string, x: number, y: number; };
 
 export function FewArrows() {
 
     const [boxes] = useState<BoxPos[]>(() => ([
-        { id: 'box1', x: 50, y: 20, reference: useRef(null) },
-        { id: 'box2', x: 20, y: 250, reference: useRef(null) },
-        { id: 'box3', x: 350, y: 80, reference: useRef(null) },
+        { id: 'box1', x: 50, y: 20 },
+        { id: 'box2', x: 20, y: 250 },
+        { id: 'box3', x: 350, y: 80 },
     ]));
 
     const [lines] = useState<xarrowPropsType[]>(() => ([
         {
             start: 'box1',
             end: 'box2',
-            headSize: 14,
-            labels: { end: 'endLabel' },
+            headSize: 6,
+            labels: { end: 'Arrow1: end' },
         },
         {
             start: 'box2',
             end: 'box3',
             color: 'red',
+            strokeWidth: 1,
+            headSize: 0,
             labels: {
                 middle: (
-                    <div
-                        contentEditable
-                        suppressContentEditableWarning={true}
-                        style={{ font: 'italic 1.5em serif', color: 'purple' }}>
+                    <div contentEditable suppressContentEditableWarning={true} style={{ color: 'purple' }}>
                         Editable label
                     </div>
                 ),
             },
-            headSize: 0,
-            strokeWidth: 15,
         },
         {
             start: 'box3',
             end: 'box1',
-            color: 'green',
+            color: 'forestgreen',
             path: 'grid',
-            // endAnchor: ["right", {position: "left", offset: {y: -10}}],
+            endAnchor: ["right", { position: "left", offset: { y: -10 } }],
             dashness: { animation: 1 },
         },
     ]));
@@ -88,25 +92,24 @@ export function FewArrows() {
         <h3>
             Example1:
         </h3>
-
         <p>
-            automatic anchoring to the minimal length. works also when inside scrollable window. drag the boxes to play around.
+            Automatic anchoring to the minimal length. <br />
+            Works also when inside scrollable window. <br />
+            Drag the boxes to play around.
         </p>
 
-        <div style={{ ...canvasStyle, position: 'relative', color: 'black' }} id="canvas">
+        <div style={canvasStyle}>
             <Xwrapper>
 
-                {boxes.map((box, i) => (
-                    <DraggableBox ref={box.reference} box={box} key={i} />
+                {boxes.map((box, idx) => (
+                    <DraggableBox box={box} key={idx} />
                 ))}
 
-                {lines.map((line, i) => (
-                    <Xarrow key={i} {...line} />
+                {lines.map((line, idx) => (
+                    <Xarrow key={idx} {...line} />
                 ))}
 
             </Xwrapper>
         </div>
-
-        <br />
     </>);
 }
