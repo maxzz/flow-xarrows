@@ -2,9 +2,9 @@ import { useState, useRef, HTMLAttributes, ReactNode, CSSProperties } from 'reac
 import Xarrow, { arrowShapes, useXarrow, Xwrapper } from 'react-xarrows';
 import Draggable from 'react-draggable';
 import NumericInput from 'react-numeric-input';
-import Collapsible from 'react-collapsible';
+import Collapsible, { CollapsibleProps } from 'react-collapsible';
 
-const canvasStyle = {
+const canvasStyle: CSSProperties = {
     width: '100%',
     height: '60vh',
     background: 'white',
@@ -14,7 +14,7 @@ const canvasStyle = {
     color: 'black',
 };
 
-const boxStyle = {
+const boxStyle: CSSProperties = {
     position: 'absolute',
     background: 'white',
     border: '1px #999 solid',
@@ -25,7 +25,7 @@ const boxStyle = {
     color: 'black',
 };
 
-const centeredFlex = {
+const centeredFlex: CSSProperties = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -44,7 +44,7 @@ const Div = ({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) 
     );
 };
 
-const MyCollapsible = ({ children, style = {}, title = 'title', ...rest }: { children?: ReactNode; style?: CSSProperties; title?: string; } & Collapsible) => {
+const MyCollapsible = ({ children, style = {}, title = 'title', ...rest }: { children?: ReactNode; style?: CSSProperties; title?: string; } & Omit<CollapsibleProps, 'trigger'>) => {
     return (
         <Collapsible
             open={false}
@@ -60,15 +60,18 @@ const MyCollapsible = ({ children, style = {}, title = 'title', ...rest }: { chi
 };
 
 // not in single line
-const CollapsibleDiv = ({ children, style = {}, title = 'title', ...props }: { children?: ReactNode; style?: CSSProperties; title?: string; } & Collapsible) => {
+const CollapsibleDiv = ({ children, style = {}, title = 'title', ...rest }: { children?: ReactNode; style?: CSSProperties; title?: string; } & Omit<CollapsibleProps, 'trigger'>) => {
     return (
         <Collapsible
             open={false}
             trigger={title}
             transitionTime={100}
             containerElementProps={{ style: { border: '1px #999 solid', }, }}
-            triggerStyle={centeredFlex}>
-            <Div {...{ children, style, ...props }}>{children}</Div>
+            triggerStyle={centeredFlex}
+        >
+            <Div {...{ children, style, ...rest }}>
+                {children}
+            </Div>
         </Collapsible>
     );
 };
@@ -84,7 +87,7 @@ const Box = (props) => {
     );
 };
 
-const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }) => {
+const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: { anchorName: string, edgeAnchor: string[], setAnchor: React.Dispatch<React.SetStateAction<string[]>>; }) => {
     return (
         <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
             <p>{anchorName}: </p>
@@ -315,6 +318,7 @@ export function CustomizeArrow() {
                         <ArrowAnchor edgeAnchor={startAnchor} anchorName={'startAnchor'} setAnchor={setStartAnchor} />
                         <ArrowAnchor edgeAnchor={endAnchor} anchorName={'endAnchor'} setAnchor={setEndAnchor} />
                     </CollapsibleDiv>
+
                     <MyCollapsible title={'arrow apearance'} open={true}>
                         <Div>
                             <p>arrow color(all): </p>
@@ -323,17 +327,20 @@ export function CustomizeArrow() {
                                     <option key={i}>{o}</option>
                                 ))}
                             </select>
+
                             <p>line color: </p>
                             <select onChange={(e) => setLineColor(e.target.value)}>
                                 {bodyColorOptions.map((o, i) => (
                                     <option key={i}>{o}</option>
                                 ))}
                             </select>
+
                             <p>strokeWidth: </p>
                             <NumericInput
                                 value={strokeWidth}
                                 onChange={(val) => setStrokeWidth(val)}
-                                style={{ input: { width: 60 } }} />
+                                style={{ input: { width: 60 } }}
+                            />
                         </Div>
                         <Div>
                             <p>curveness: </p>
@@ -341,15 +348,19 @@ export function CustomizeArrow() {
                                 value={curveness}
                                 onChange={(val) => setCurveness(val)}
                                 step={0.1}
-                                style={{ input: { width: 60 } }} />
+                                style={{ input: { width: 60 } }}
+                            />
+
                             <p>animation: </p>
                             <NumericInput value={animation} onChange={(val) => setAnimation(val)} style={{ input: { width: 60 } }} />
+
                             <p>dashed: </p>
                             <input
                                 style={{ height: '15px', width: '15px' }}
                                 type="checkBox"
                                 checked={dashed}
                                 onChange={(e) => setDashed(e.target.checked)} />
+
                             <p>path: </p>
                             <select onChange={(e) => setPath(e.target.value)}>
                                 {['smooth', 'grid', 'straight'].map((o, i) => (
@@ -367,7 +378,8 @@ export function CustomizeArrow() {
                             // edgeOffset={headOffset}
                             // setEdgeOffset={setHeadOffset}
                             edgeShape={headShape}
-                            setEdgeShape={setHeadShape} />
+                            setEdgeShape={setHeadShape}
+                        />
                         <ArrowEdge
                             edgeName={'tail'}
                             setEdge={setTailColor}
@@ -378,7 +390,8 @@ export function CustomizeArrow() {
                             // edgeOffset={tailOffset}
                             // setEdgeOffset={setTailOffset}
                             edgeShape={tailShape}
-                            setEdgeShape={setTailShape} />
+                            setEdgeShape={setTailShape}
+                        />
                         <Div>
                             <p>show arrow: </p>
                             <input
@@ -387,7 +400,8 @@ export function CustomizeArrow() {
                                 checked={showArrow}
                                 onChange={(e) => {
                                     setShowArrow(e.target.checked);
-                                }} />
+                                }}
+                            />
                             <p>animateDrawing(secs): </p>
                             <input
                                 style={{ height: '15px', width: '15px' }}
@@ -395,12 +409,14 @@ export function CustomizeArrow() {
                                 checked={enableAnimateDrawing}
                                 onChange={(e) => {
                                     setEnableAnimateDrawing(e.target.checked);
-                                }} />
+                                }}
+                            />
                             <NumericInput
                                 value={animateDrawing}
                                 onChange={(val) => setAnimateDrawing(val)}
                                 style={{ input: { width: 60 } }}
-                                step={0.2} />
+                                step={0.2}
+                            />
                         </Div>
                     </MyCollapsible>
 
@@ -434,18 +450,21 @@ export function CustomizeArrow() {
                                 onChange={(val) => set_Cpx1(val)}
                                 style={{ input: { width: 70 } }}
                                 step={2} />
+
                             <p>_cpy1Offset: </p>
                             <NumericInput
                                 value={_cpy1Offset}
                                 onChange={(val) => set_Cpy1(val)}
                                 style={{ input: { width: 70 } }}
                                 step={2} />
+
                             <p>_cpx2Offset: </p>
                             <NumericInput
                                 value={_cpx2Offset}
                                 onChange={(val) => set_Cpx2(val)}
                                 style={{ input: { width: 70 } }}
                                 step={2} />
+
                             <p>_cpy2Offset: </p>
                             <NumericInput
                                 value={_cpy2Offset}
