@@ -10,7 +10,7 @@ const canvasStyle: CSSProperties = {
     margin: '0 0 20px 0',
     width: '100%',
     height: '240px',
-    
+
     color: 'black',
     background: 'ghostwhite',
 
@@ -31,14 +31,16 @@ const Row = ({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) 
     );
 };
 
-const MyCollapsible = ({ children, style = {}, title = 'title', ...rest }: { children?: ReactNode; style?: CSSProperties; title?: string; } & Omit<CollapsibleProps, 'trigger'>) => {
+const MyCollapsible = ({ children, style = {}, title, ...rest }: { children?: ReactNode; style?: CSSProperties; title: string; } & Omit<CollapsibleProps, 'trigger'>) => {
     return (
         <Collapsible
             open={false}
             trigger={title}
             transitionTime={100}
-            containerElementProps={{ style: { border: '1px #999 solid', }, }}
+            containerElementProps={{ style: { border: '1px red solid', }, }}
             triggerStyle={centeredFlex}
+            style={{ color: 'red' }}
+            className="collapsible-title"
             {...rest}
         >
             {children}
@@ -47,16 +49,17 @@ const MyCollapsible = ({ children, style = {}, title = 'title', ...rest }: { chi
 };
 
 // not in single line
-const CollapsibleDiv = ({ children, style = {}, title = 'title', ...rest }: { children?: ReactNode; style?: CSSProperties; title?: string; } & HTMLAttributes<HTMLDivElement>) => {
+const CollapsibleDiv = ({ children, title = 'title', ...rest }: { children?: ReactNode; title?: string; } & HTMLAttributes<HTMLDivElement>) => {
     return (
         <Collapsible
             open={false}
             trigger={title}
             transitionTime={100}
-            containerElementProps={{ style: { border: '1px #999 solid', }, }}
+            containerElementProps={{ style: { border: '1px orange solid', }, }}
             triggerStyle={centeredFlex}
+            className="collapsible-title"
         >
-            <Row {...{ children, style, ...rest }}>
+            <Row {...rest}>
                 {children}
             </Row>
         </Collapsible>
@@ -83,11 +86,8 @@ const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: {
         <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
             <p>{anchorName}: </p>
             <div>
-                {anchorsTypes.map((anchor, i) => (
-                    <div style={{ display: 'flex', alignItems: 'center', height: 25, }} key={i}>
-                        <p>
-                            {anchor}
-                        </p>
+                {anchorsTypes.map((anchor, idx) => (
+                    <div style={{ display: 'flex', alignItems: 'center', height: 25, }} key={idx}>
                         <input
                             type="checkBox"
                             style={{ height: '15px', width: '15px' }}
@@ -102,6 +102,9 @@ const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: {
                                 }
                             }}
                         />
+                        <p>
+                            {anchor}
+                        </p>
                     </div>
                 ))}
             </div>
@@ -226,23 +229,23 @@ export function CustomizeArrow() {
     const [lineColor, setLineColor] = useState<string | null>(null);
     const [showArrow, setShowArrow] = useState(true);
     const [showHead, setShowHead] = useState(true);
-    
+
     const [headColor, setHeadColor] = useState<string | null>(null);
     const [headSize, setHeadSize] = useState<number | undefined>(6);
-    
+
     const [showTail, setShowTail] = useState(false);
     const [tailColor, setTailColor] = useState<string | null>(null);
     const [tailSize, setTailSize] = useState<number | undefined>(6);
     const [curveness, setCurveness] = useState<number | undefined>(0.8);
     const [strokeWidth, setStrokeWidth] = useState<number | undefined>(4);
-    
+
     const [startAnchor, setStartAnchor] = useState<anchorNamedType[]>(['auto']);
     const [endAnchor, setEndAnchor] = useState<anchorNamedType[]>(['auto']);
-    
+
     const [dashed, setDashed] = useState(false);
     const [animation, setAnimation] = useState<number | undefined>(1);
     const [path, setPath] = useState<pathType>('smooth');
-    
+
     const [startLabel, setStartLabel] = useState("I'm start label");
     const [middleLabel, setMiddleLabel] = useState('middleLabel');
     const [endLabel, setEndLabel] = useState('fancy end label');
@@ -325,12 +328,12 @@ export function CustomizeArrow() {
                         </Xwrapper>
                     </div>
 
-                    <CollapsibleDiv title={'anchors'}>
-                        <ArrowAnchor anchorName={'startAnchor'} edgeAnchor={startAnchor} setAnchor={setStartAnchor} />
-                        <ArrowAnchor anchorName={'endAnchor'} edgeAnchor={endAnchor} setAnchor={setEndAnchor} />
+                    <CollapsibleDiv title="Anchors" >
+                        <ArrowAnchor anchorName="startAnchor" edgeAnchor={startAnchor} setAnchor={setStartAnchor} />
+                        <ArrowAnchor anchorName="endAnchor" edgeAnchor={endAnchor} setAnchor={setEndAnchor} />
                     </CollapsibleDiv>
 
-                    <MyCollapsible title={'arrow apearance'} open={true}>
+                    <MyCollapsible title="Arrow apearance" open={true}>
                         <Row>
                             <p>arrow color(all): </p>
                             <select style={{ marginRight: 10 }} onChange={(e) => setColor(e.target.value)}>
@@ -431,13 +434,13 @@ export function CustomizeArrow() {
                         </Row>
                     </MyCollapsible>
 
-                    <CollapsibleDiv title={'labels'}>
-                        <ArrowLabel labelName={'start'} label={startLabel} setLabel={setStartLabel} />
-                        <ArrowLabel labelName={'middle'} label={middleLabel} setLabel={setMiddleLabel} />
-                        <ArrowLabel labelName={'end'} label={endLabel} setLabel={setEndLabel} />
+                    <CollapsibleDiv title="labels">
+                        <ArrowLabel labelName="start" label={startLabel} setLabel={setStartLabel} />
+                        <ArrowLabel labelName="middle" label={middleLabel} setLabel={setMiddleLabel} />
+                        <ArrowLabel labelName="end" label={endLabel} setLabel={setEndLabel} />
                     </CollapsibleDiv>
 
-                    <MyCollapsible title={'advanced'}>
+                    <MyCollapsible title="advanced">
                         <Row>
                             <p>_extendSVGcanvas: </p>
                             <NumericInput
@@ -484,7 +487,7 @@ export function CustomizeArrow() {
                                 step={2} />
                         </Row>
                     </MyCollapsible>
-                    
+
                     {/*/!* todo: add generated code preview *!/ */}
                     {/*<pre>*/}
                     {/*  <code className="jsx">&lt;Index {}/&gt;</code>*/}
