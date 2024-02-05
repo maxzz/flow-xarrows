@@ -5,5 +5,10 @@ input, select {
 
 .collapsible-title {
     padding: 6px;
-    color: red;
+}
+
+.Collapsible__trigger {
+    width: 100%;
+    color: white;
+    background-color: #5b6aa0
 }

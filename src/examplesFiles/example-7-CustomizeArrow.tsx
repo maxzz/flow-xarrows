@@ -35,12 +35,12 @@ const MyCollapsible = ({ children, style = {}, title, ...rest }: { children?: Re
     return (
         <Collapsible
             open={false}
-            trigger={title}
+            trigger={<div className="collapsible-title">{title}</div>}
+            triggerTagName="div"
+            triggerStyle={{ ...centeredFlex, ...{ cursor: 'pointer', borderBottom: '1px #272e45 solid', } }}
+            containerElementProps={{ style: { border: '1px #5b6aa0 solid', }, }}
             transitionTime={100}
-            containerElementProps={{ style: { border: '1px red solid', }, }}
-            triggerStyle={centeredFlex}
-            style={{ color: 'red' }}
-            className="collapsible-title"
+            // style={{ color: 'red' }}
             {...rest}
         >
             {children}
@@ -53,11 +53,11 @@ const CollapsibleDiv = ({ children, title = 'title', ...rest }: { children?: Rea
     return (
         <Collapsible
             open={false}
-            trigger={title}
+            trigger={<div className="collapsible-title">{title}</div>}
+            triggerTagName="div"
+            triggerStyle={{ ...centeredFlex, ...{ cursor: 'pointer', borderBottom: '1px #272e45 solid', } }}
+            containerElementProps={{ style: { border: '1px #5b6aa0 solid', }, }}
             transitionTime={100}
-            containerElementProps={{ style: { border: '1px orange solid', }, }}
-            triggerStyle={centeredFlex}
-            className="collapsible-title"
         >
             <Row {...rest}>
                 {children}
@@ -434,13 +434,13 @@ export function CustomizeArrow() {
                         </Row>
                     </MyCollapsible>
 
-                    <CollapsibleDiv title="labels">
+                    <CollapsibleDiv title="Labels">
                         <ArrowLabel labelName="start" label={startLabel} setLabel={setStartLabel} />
                         <ArrowLabel labelName="middle" label={middleLabel} setLabel={setMiddleLabel} />
                         <ArrowLabel labelName="end" label={endLabel} setLabel={setEndLabel} />
                     </CollapsibleDiv>
 
-                    <MyCollapsible title="advanced">
+                    <MyCollapsible title="Advanced">
                         <Row>
                             <p>_extendSVGcanvas: </p>
                             <NumericInput
