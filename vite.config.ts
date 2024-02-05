@@ -13,6 +13,7 @@ logger.info = (msg, options) => {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: '',
     plugins: [react()],
     customLogger: logger,
     server: {
