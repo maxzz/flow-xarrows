@@ -23,22 +23,22 @@ const bodyColorOptions = [null, ...colorOptions];
 const anchorsTypes = ['left', 'right', 'top', 'bottom', 'middle', 'auto'] as const;
 
 // one row div with elements centered
-const Row = ({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) => {
+function Row({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) {
     return (
         <div style={{ width: '100%', ...centeredFlex, ...style, }} {...rest}>
             {children}
         </div>
     );
-};
+}
 
-const MyCollapsible = ({ children, style = {}, title, ...rest }: { children?: ReactNode; style?: CSSProperties; title: string; } & Omit<CollapsibleProps, 'trigger'>) => {
+function MyCollapsible({ children, style = {}, title, ...rest }: { children?: ReactNode; style?: CSSProperties; title: string; } & Omit<CollapsibleProps, 'trigger'>) {
     return (
         <Collapsible
             open={false}
             trigger={<div className="collapsible-title">{title}</div>}
             triggerTagName="div"
             triggerStyle={{ ...centeredFlex, ...{ cursor: 'pointer', borderBottom: '1px #272e45 solid', } }}
-            containerElementProps={{ style: { border: '1px #5b6aa0 solid', }, }}
+            containerElementProps={{ style: { backgroundColor: "#ebeef9", border: '1px #5b6aa0 solid', }, }}
             transitionTime={100}
             // style={{ color: 'red' }}
             {...rest}
@@ -46,17 +46,17 @@ const MyCollapsible = ({ children, style = {}, title, ...rest }: { children?: Re
             {children}
         </Collapsible>
     );
-};
+}
 
 // not in single line
-const CollapsibleDiv = ({ children, title = 'title', ...rest }: { children?: ReactNode; title?: string; } & HTMLAttributes<HTMLDivElement>) => {
+function CollapsibleDiv({ children, title = 'title', ...rest }: { children?: ReactNode; title?: string; } & HTMLAttributes<HTMLDivElement>) {
     return (
         <Collapsible
             open={false}
             trigger={<div className="collapsible-title">{title}</div>}
             triggerTagName="div"
             triggerStyle={{ ...centeredFlex, ...{ cursor: 'pointer', borderBottom: '1px #272e45 solid', } }}
-            containerElementProps={{ style: { border: '1px #5b6aa0 solid', }, }}
+            containerElementProps={{ style: { backgroundColor: "#ebeef9", border: '1px #5b6aa0 solid', }, }}
             transitionTime={100}
         >
             <Row {...rest}>
@@ -64,9 +64,9 @@ const CollapsibleDiv = ({ children, title = 'title', ...rest }: { children?: Rea
             </Row>
         </Collapsible>
     );
-};
+}
 
-const Box = (props: { box: BoxPos; }) => {
+function Box(props: { box: BoxPos; }) {
     const updateXarrow = useXarrow();
     return (
         <Draggable onDrag={updateXarrow} onStop={updateXarrow}>
@@ -75,13 +75,13 @@ const Box = (props: { box: BoxPos; }) => {
             </div>
         </Draggable>
     );
-};
+}
 
-const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: {
+function ArrowAnchor({ anchorName, edgeAnchor, setAnchor }: {
     anchorName: string;
     edgeAnchor: anchorNamedType[];
     setAnchor: React.Dispatch<React.SetStateAction<anchorNamedType[]>>;
-}) => {
+}) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
             <p>{anchorName}: </p>
@@ -100,8 +100,7 @@ const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: {
                                     a.splice(edgeAnchor.indexOf(anchor), 1);
                                     setAnchor(a);
                                 }
-                            }}
-                        />
+                            } } />
                         <p>
                             {anchor}
                         </p>
@@ -110,7 +109,7 @@ const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: {
             </div>
         </div>
     );
-};
+}
 
 type ArrowShapeType = {
     svgElem: JSX.Element;
@@ -119,7 +118,7 @@ type ArrowShapeType = {
 };
 type ArrowShapeKeys = keyof typeof arrowShapes;
 
-const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShowEdge, edgeShape, setEdgeShape }: {
+function ArrowEdge({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShowEdge, edgeShape, setEdgeShape }: {
     edgeName: string;
     setEdge: (v: string) => void;
     edgeSize: number | undefined;
@@ -128,8 +127,7 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
     setShowEdge: (v: boolean) => void;
     edgeShape: svgEdgeShapeType | svgCustomEdgeType;
     setEdgeShape: (v: ArrowShapeType | ArrowShapeKeys) => void;
-}
-) => {
+}) {
     const predefinedShapes = Object.keys(arrowShapes) as ArrowShapeKeys[];
     const [selectedShape, setSelectedShape] = useState<ArrowShapeKeys>(predefinedShapes[0]);
     const [adv, setAdv] = useState(false);
@@ -171,8 +169,7 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
                 type="checkBox"
                 checked={showEdge}
                 onChange={(e) => setShowEdge(e.target.checked)}
-                style={{ height: '15px', width: '15px' }}
-            />
+                style={{ height: '15px', width: '15px' }} />
 
             <p> color: </p>
             <select style={{ marginRight: 10 }} onChange={(e) => setEdge(e.target.value)}>
@@ -206,7 +203,7 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
             {/*</MyCollapsible>*/}
         </Row>
     );
-};
+}
 
 const ArrowLabel = ({ labelName, label, setLabel }: { labelName: string; label: string; setLabel: (v: string) => void; }) => {
     return (
