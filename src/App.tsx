@@ -1,5 +1,5 @@
 import { DraggableBox } from "./components/DraggableBox";
-import { FewArrows } from "./examplesFiles/FewArrows";
+import { FewArrows } from "./examplesFiles/example-6-FewArrows";
 
 export function App() {
     return (

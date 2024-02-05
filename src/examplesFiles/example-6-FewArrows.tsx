@@ -1,44 +1,8 @@
-import { CSSProperties, forwardRef, useRef, useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 import Xarrow, { useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
 import Draggable from 'react-draggable';
-
-const canvasStyle: CSSProperties = {
-    position: 'relative',
-    height: '420px',
-    background: 'ghostwhite',
-    color: 'red',
-
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-};
-
-const boxStyle: CSSProperties = {
-    position: 'relative',
-    padding: '12px 4px',
-    width: '100px',
-    height: '30px',
-    borderRadius: '6px',
-    border: '1px #999 solid',
-
-    userSelect: 'none',
-    cursor: 'move',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-};
-
-export function mergeRefs<T = any>(refs: Array<React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null>): React.RefCallback<T> {
-    return (value) => {
-        refs.forEach((ref) => {
-            if (typeof ref === "function") {
-                ref(value);
-            } else if (ref != null) {
-                (ref as React.MutableRefObject<T | null>).current = value;
-            }
-        });
-    };
-}
+import { mergeRefs } from '../utils/merge-refs';
+import { boxStyle, canvasStyle } from './ui';
 
 const DraggableBox = forwardRef<HTMLDivElement, { box: BoxPos; }>(
     ({ box }, outRef) => {
@@ -53,9 +17,11 @@ const DraggableBox = forwardRef<HTMLDivElement, { box: BoxPos; }>(
                 onStop={updateXarrow}
                 nodeRef={ref}
             >
-                <div ref={mergeRefs([ref, outRef])} id={box.id} style={{ ...boxStyle, position: 'absolute', left: box.x, top: box.y }}>
-                    {box.id}
-                </div>
+                {/* <div className=""> */}
+                    <div ref={mergeRefs([ref, outRef])} id={box.id} style={{ ...boxStyle, position: 'absolute', left: box.x, top: box.y }}>
+                        {box.id}
+                    </div>
+                {/* </div> */}
             </Draggable>
         );
     }
@@ -67,7 +33,7 @@ export function FewArrows() {
 
     const [boxes] = useState<BoxPos[]>(() => ([
         { id: 'box1', x: 50, y: 20 },
-        { id: 'box2', x: 20, y: 250 },
+        { id: 'box2', x: 160, y: 250 },
         { id: 'box3', x: 350, y: 80 },
     ]));
 
