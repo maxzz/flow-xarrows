@@ -12,3 +12,7 @@ input, select {
     color: white;
     background-color: #5b6aa0
 }
+
+.control-label {
+    color: cadetblue;
+}

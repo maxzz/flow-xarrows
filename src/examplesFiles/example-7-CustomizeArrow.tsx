@@ -31,7 +31,7 @@ function Row({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) 
     );
 }
 
-function MyCollapsible({ children, style = {}, title, ...rest }: { children?: ReactNode; style?: CSSProperties; title: string; } & Omit<CollapsibleProps, 'trigger'>) {
+function MyCollapsible({ children, title, ...rest }: { children?: ReactNode; title: string; } & Omit<CollapsibleProps, 'trigger'>) {
     return (
         <Collapsible
             open={false}
@@ -41,7 +41,7 @@ function MyCollapsible({ children, style = {}, title, ...rest }: { children?: Re
             containerElementProps={{ style: { backgroundColor: "#ebeef9", border: '1px #5b6aa0 solid', }, }}
             transitionTime={100}
             // style={{ color: 'red' }}
-            {...rest}
+            // {...rest}
         >
             {children}
         </Collapsible>
@@ -100,7 +100,7 @@ function ArrowAnchor({ anchorName, edgeAnchor, setAnchor }: {
                                     a.splice(edgeAnchor.indexOf(anchor), 1);
                                     setAnchor(a);
                                 }
-                            } } />
+                            }} />
                         <p>
                             {anchor}
                         </p>
@@ -161,46 +161,57 @@ function ArrowEdge({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
     }
 
     return (
-        <Row title={'arrow ' + edgeName}>
-            <b>{edgeName}: </b>
+        <Row title={'arrow ' + edgeName} style={{ marginTop: 12, justifyContent: "start" }}>
+            <div style={{ width: "50px", fontWeight: 700, textTransform: "capitalize" }}>{edgeName}</div>
 
-            <p>show: </p>
-            <input
-                type="checkBox"
-                checked={showEdge}
-                onChange={(e) => setShowEdge(e.target.checked)}
-                style={{ height: '15px', width: '15px' }} />
+            <div style={{ flexGrow: 1, display:"flex", gap: 12 }}>
+                <div style={{display:"flex",alignItems:"center"}}>
+                    <input
+                        type="checkBox"
+                        checked={showEdge}
+                        onChange={(e) => setShowEdge(e.target.checked)}
+                        style={{ height: '15px', width: '15px' }}
+                    />
+                    <div className="control-label">show</div>
+                </div>
 
-            <p> color: </p>
-            <select style={{ marginRight: 10 }} onChange={(e) => setEdge(e.target.value)}>
-                {bodyColorOptions.map((option, idx) => (
-                    <option key={idx}>{option}</option>
-                ))}
-            </select>
+                <div className="">
+                    <div className="control-label">Color</div>
+                    <select style={{ marginRight: 10 }} onChange={(e) => setEdge(e.target.value)}>
+                        {bodyColorOptions.map((option, idx) => (
+                            <option key={idx}>{option}</option>
+                        ))}
+                    </select>
+                </div>
 
-            <p>size: </p>
-            <NumericInput value={edgeSize} onChange={(val) => setEdgeSize(val || undefined)} style={{ input: { width: 60 } }} />
+                <div className="">
+                    <div className="control-label">Size</div>
+                    <NumericInput value={edgeSize} onChange={(val) => setEdgeSize(val || undefined)} style={{ input: { width: 60 } }} />
+                </div>
 
-            <p>shape: </p>
-            <select onChange={handleMenuSelectShape}>
-                {predefinedShapes.map((option, idx) => (
-                    <option key={idx}>{option}</option>
-                ))}
-            </select>
+                <div className="">
+                    <div className="control-label">Shape</div>
+                    <select onChange={handleMenuSelectShape}>
+                        {predefinedShapes.map((option, idx) => (
+                            <option key={idx}>{option}</option>
+                        ))}
+                    </select>
+                </div>
 
-            {/*<MyCollapsible title={'advanced'} onOpen={onAdvOpen} onClose={onAdvClose}>*/}
-            {/*  /!*<Div>*!/*/}
-            {/*  <p>{edgeName}Offset: </p>*/}
-            {/*  <NumericInput*/}
-            {/*    value={edgeOffset}*/}
-            {/*    onChange={(val) => {*/}
-            {/*      setEdgeOffset(val);*/}
-            {/*      update({ offsetForward: val });*/}
-            {/*    }}*/}
-            {/*    style={{ input: { width: 70 } }}*/}
-            {/*    step={0.01}*/}
-            {/*  />*/}
-            {/*</MyCollapsible>*/}
+                {/*<MyCollapsible title={'advanced'} onOpen={onAdvOpen} onClose={onAdvClose}>*/}
+                {/*  /!*<Div>*!/*/}
+                {/*  <p>{edgeName}Offset: </p>*/}
+                {/*  <NumericInput*/}
+                {/*    value={edgeOffset}*/}
+                {/*    onChange={(val) => {*/}
+                {/*      setEdgeOffset(val);*/}
+                {/*      update({ offsetForward: val });*/}
+                {/*    }}*/}
+                {/*    style={{ input: { width: 70 } }}*/}
+                {/*    step={0.01}*/}
+                {/*  />*/}
+                {/*</MyCollapsible>*/}
+            </div>
         </Row>
     );
 }
