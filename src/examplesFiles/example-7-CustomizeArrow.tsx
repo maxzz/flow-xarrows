@@ -93,20 +93,14 @@ const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: { anchorName: string
             <p>{anchorName}: </p>
             <div>
                 {anchorsTypes.map((anchor, i) => (
-                    <div
-                        key={i}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            height: 25,
-                        }}
-                    >
-                        <p>{anchor}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', height: 25, }} key={i}>
+                        <p>
+                            {anchor}
+                        </p>
                         <input
-                            style={{ height: '15px', width: '15px' }}
                             type="checkBox"
+                            style={{ height: '15px', width: '15px' }}
                             checked={edgeAnchor.includes(anchor)}
-                            // value={}
                             onChange={(e) => {
                                 if (e.target.checked) {
                                     setAnchor([...edgeAnchor, anchor]);
@@ -124,12 +118,22 @@ const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: { anchorName: string
     );
 };
 
-const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShowEdge, edgeShape, setEdgeShape }) => {
-    const shapes = Object.keys(arrowShapes);
+const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShowEdge, edgeShape, setEdgeShape }: {
+    edgeName: string;
+    setEdge: (v: string) => void;
+    edgeSize: number;
+    setEdgeSize: (v: number) => void;
+    showEdge: boolean;
+    setShowEdge: (v: boolean) => void;
+    edgeShape: string; 
+    setEdgeShape: (v: string) => void;
+}
+) => {
+    const shapes = Object.keys(arrowShapes) as Array<keyof typeof arrowShapes>;
     const [selectedShape, setSelectedShape] = useState(shapes[0]);
     const [adv, setAdv] = useState(false);
 
-    const [edgeOffset, setEdgeOffset] = useState(arrowShapes[shapes[0]].offsetForward);
+    const [edgeOffset, setEdgeOffset] = useState<number>(arrowShapes[shapes[0]].offsetForward);
     const [svgElem, setSvgElem] = useState(arrowShapes[shapes[0]].svgElem);
 
     function handleMenuSelectShape(e) {
