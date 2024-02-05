@@ -1,34 +1,18 @@
 import { useState, useRef, HTMLAttributes, ReactNode, CSSProperties } from 'react';
-import Xarrow, { anchorNamedType, anchorType, arrowShapes, pathType, svgCustomEdgeType, svgEdgeShapeType, useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
+import Xarrow, { anchorNamedType, arrowShapes, pathType, svgCustomEdgeType, svgEdgeShapeType, useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
 import Draggable from 'react-draggable';
 import NumericInput from 'react-numeric-input';
 import Collapsible, { CollapsibleProps } from 'react-collapsible';
+import { boxStyle, centeredFlex } from './ui';
 
 const canvasStyle: CSSProperties = {
     width: '100%',
-    height: '60vh',
-    background: 'white',
+    height: '420px',
+    background: 'ghostwhite',
     overflow: 'auto',
     display: 'flex',
     position: 'relative',
     color: 'black',
-};
-
-const boxStyle: CSSProperties = {
-    position: 'absolute',
-    background: 'white',
-    border: '1px #999 solid',
-    borderRadius: '10px',
-    textAlign: 'center',
-    width: '100px',
-    height: '30px',
-    color: 'black',
-};
-
-const centeredFlex: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
 };
 
 const colorOptions = ['red', 'BurlyWood', 'CadetBlue', 'Coral'] as const;
@@ -36,7 +20,7 @@ const bodyColorOptions = [null, ...colorOptions];
 const anchorsTypes = ['left', 'right', 'top', 'bottom', 'middle', 'auto'] as const;
 
 // one row div with elements centered
-const Div = ({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) => {
+const Row = ({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) => {
     return (
         <div style={{ width: '100%', ...centeredFlex, ...style, }} {...rest}>
             {children}
@@ -69,9 +53,9 @@ const CollapsibleDiv = ({ children, style = {}, title = 'title', ...rest }: { ch
             containerElementProps={{ style: { border: '1px #999 solid', }, }}
             triggerStyle={centeredFlex}
         >
-            <Div {...{ children, style, ...rest }}>
+            <Row {...{ children, style, ...rest }}>
                 {children}
-            </Div>
+            </Row>
         </Collapsible>
     );
 };
@@ -173,7 +157,7 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
     }
 
     return (
-        <Div title={'arrow ' + edgeName}>
+        <Row title={'arrow ' + edgeName}>
             <b>{edgeName}: </b>
 
             <p>show: </p>
@@ -186,8 +170,8 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
 
             <p> color: </p>
             <select style={{ marginRight: 10 }} onChange={(e) => setEdge(e.target.value)}>
-                {bodyColorOptions.map((o, i) => (
-                    <option key={i}>{o}</option>
+                {bodyColorOptions.map((option, idx) => (
+                    <option key={idx}>{option}</option>
                 ))}
             </select>
 
@@ -214,16 +198,16 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
             {/*    step={0.01}*/}
             {/*  />*/}
             {/*</MyCollapsible>*/}
-        </Div>
+        </Row>
     );
 };
 
 const ArrowLabel = ({ labelName, label, setLabel }: { labelName: string; label: string; setLabel: (v: string) => void; }) => {
     return (
-        <Div>
+        <Row>
             <p>{labelName} label:</p>
             <input style={{ width: '120px' }} type="text" value={label} onChange={(e) => setLabel(e.target.value)} />
-        </Div>
+        </Row>
     );
 };
 
@@ -333,7 +317,7 @@ export function CustomizeArrow() {
                     </CollapsibleDiv>
 
                     <MyCollapsible title={'arrow apearance'} open={true}>
-                        <Div>
+                        <Row>
                             <p>arrow color(all): </p>
                             <select style={{ height: '20px', marginRight: 10 }} onChange={(e) => setColor(e.target.value)}>
                                 {colorOptions.map((o, i) => (
@@ -343,8 +327,8 @@ export function CustomizeArrow() {
 
                             <p>line color: </p>
                             <select onChange={(e) => setLineColor(e.target.value)}>
-                                {bodyColorOptions.map((o, i) => (
-                                    <option key={i}>{o}</option>
+                                {bodyColorOptions.map((option, idx) => (
+                                    <option key={idx}>{option}</option>
                                 ))}
                             </select>
 
@@ -354,8 +338,8 @@ export function CustomizeArrow() {
                                 onChange={(val) => setStrokeWidth(val || undefined)}
                                 style={{ input: { width: 60 } }}
                             />
-                        </Div>
-                        <Div>
+                        </Row>
+                        <Row>
                             <p>curveness: </p>
                             <NumericInput
                                 value={curveness}
@@ -380,7 +364,7 @@ export function CustomizeArrow() {
                                     <option key={i}>{o}</option>
                                 ))}
                             </select>
-                        </Div>
+                        </Row>
                         <ArrowEdge
                             edgeName={'head'}
                             setEdge={setHeadColor}
@@ -405,7 +389,7 @@ export function CustomizeArrow() {
                             edgeShape={tailShape}
                             setEdgeShape={setTailShape}
                         />
-                        <Div>
+                        <Row>
                             <p>show arrow: </p>
                             <input
                                 style={{ height: '15px', width: '15px' }}
@@ -430,7 +414,7 @@ export function CustomizeArrow() {
                                 style={{ input: { width: 60 } }}
                                 step={0.2}
                             />
-                        </Div>
+                        </Row>
                     </MyCollapsible>
 
                     <CollapsibleDiv title={'labels'}>
@@ -440,7 +424,7 @@ export function CustomizeArrow() {
                     </CollapsibleDiv>
 
                     <MyCollapsible title={'advanced'}>
-                        <Div>
+                        <Row>
                             <p>_extendSVGcanvas: </p>
                             <NumericInput
                                 value={_extendSVGcanvas}
@@ -455,8 +439,8 @@ export function CustomizeArrow() {
                                 onChange={(e) => {
                                     set_Debug(e.target.checked);
                                 }} />
-                        </Div>
-                        <Div>
+                        </Row>
+                        <Row>
                             <p>_cpx1Offset: </p>
                             <NumericInput
                                 value={_cpx1Offset}
@@ -484,7 +468,7 @@ export function CustomizeArrow() {
                                 onChange={(val) => set_Cpy2(val || undefined)}
                                 style={{ input: { width: 70 } }}
                                 step={2} />
-                        </Div>
+                        </Row>
                     </MyCollapsible>
                     <br />
                     <div style={canvasStyle} id="canvas">

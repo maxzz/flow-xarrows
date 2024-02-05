@@ -5,11 +5,15 @@ import { FewArrows } from "./examplesFiles/example-6-FewArrows";
 export function App() {
     return (
         <>
-            <div>
-                <DraggableBox id={"55"} />
-                <FewArrows />
-                <div style={{ position: 'relative'}}>
-                <CustomizeArrow />
+            <div style={{ fontFamily: "sans-serif", fontSize: "1rem", display: "flex", flexDirection: "column" }}>
+                <div style={{ position: 'relative' }}>
+                    <DraggableBox id={"55"} />
+                </div>
+                <div style={{ position: 'relative' }}>
+                    <FewArrows />
+                </div>
+                <div style={{ position: 'relative' }}>
+                    <CustomizeArrow />
                 </div>
             </div>
         </>

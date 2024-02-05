@@ -1,5 +1,11 @@
 import { CSSProperties } from "react";
 
+export const centeredFlex: CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+
 export const canvasStyle: CSSProperties = {
     position: 'relative',
     height: '420px',
@@ -21,7 +27,5 @@ export const boxStyle: CSSProperties = {
 
     userSelect: 'none',
     cursor: 'move',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    ...centeredFlex,
 };
