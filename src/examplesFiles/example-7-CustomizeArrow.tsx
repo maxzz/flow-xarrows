@@ -180,8 +180,8 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
 
             <p>shape: </p>
             <select onChange={handleMenuSelectShape}>
-                {predefinedShapes.map((o, i) => (
-                    <option key={i}>{o}</option>
+                {predefinedShapes.map((option, idx) => (
+                    <option key={idx}>{option}</option>
                 ))}
             </select>
 
@@ -319,9 +319,9 @@ export function CustomizeArrow() {
                     <MyCollapsible title={'arrow apearance'} open={true}>
                         <Row>
                             <p>arrow color(all): </p>
-                            <select style={{ height: '20px', marginRight: 10 }} onChange={(e) => setColor(e.target.value)}>
-                                {colorOptions.map((o, i) => (
-                                    <option key={i}>{o}</option>
+                            <select style={{ marginRight: 10 }} onChange={(e) => setColor(e.target.value)}>
+                                {colorOptions.map((option, idx) => (
+                                    <option key={idx}>{option}</option>
                                 ))}
                             </select>
 

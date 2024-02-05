@@ -6,12 +6,12 @@ export function App() {
     return (
         <>
             <div style={{ fontFamily: "sans-serif", fontSize: "1rem", display: "flex", flexDirection: "column" }}>
-                <div style={{ position: 'relative' }}>
+                {/* <div style={{ position: 'relative' }}>
                     <DraggableBox id={"55"} />
                 </div>
                 <div style={{ position: 'relative' }}>
                     <FewArrows />
-                </div>
+                </div> */}
                 <div style={{ position: 'relative' }}>
                     <CustomizeArrow />
                 </div>
