@@ -7,7 +7,7 @@ import { boxStyle, centeredFlex } from './ui';
 
 const canvasStyle: CSSProperties = {
     width: '100%',
-    height: '420px',
+    height: '240px',
     background: 'ghostwhite',
     overflow: 'auto',
     display: 'flex',
@@ -216,8 +216,8 @@ type BoxPos = { id: string, x: number, y: number; ref: any; };
 export function CustomizeArrow() {
     const [showMe, setShowMe] = useState(true);
 
-    const box: BoxPos = { id: 'box1', x: 20, y: 20, ref: useRef(null), };
-    const box2: BoxPos = { id: 'box2', x: 320, y: 120, ref: useRef(null), };
+    const box: BoxPos = { id: 'box21', x: 20, y: 20, ref: useRef(null), };
+    const box2: BoxPos = { id: 'box22', x: 240, y: 120, ref: useRef(null), };
 
     const [color, setColor] = useState('red');
     const [lineColor, setLineColor] = useState<string | null>(null);
@@ -264,7 +264,7 @@ export function CustomizeArrow() {
 
     const xarrowProps: xarrowPropsType = {
         // this is the important part of the example! play with the props to understand better the API options
-        start: 'box1', //  can be string
+        start: 'box21', //  can be string
         end: box2.ref, //  or reference
         startAnchor: startAnchor,
         endAnchor: endAnchor,
