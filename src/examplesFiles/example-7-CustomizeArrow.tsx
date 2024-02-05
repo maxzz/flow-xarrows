@@ -132,11 +132,11 @@ type ArrowShapeKeys = keyof typeof arrowShapes;
 const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShowEdge, edgeShape, setEdgeShape }: {
     edgeName: string;
     setEdge: (v: string) => void;
-    edgeSize: number;
-    setEdgeSize: (v: number | null) => void;
+    edgeSize: number | undefined;
+    setEdgeSize: (v: number | undefined) => void;
     showEdge: boolean;
     setShowEdge: (v: boolean) => void;
-    edgeShape: string;
+    edgeShape: svgEdgeShapeType | svgCustomEdgeType;
     setEdgeShape: (v: ArrowShapeType | ArrowShapeKeys) => void;
 }
 ) => {
@@ -192,7 +192,7 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
             </select>
 
             <p>size: </p>
-            <NumericInput value={edgeSize} onChange={(val) => setEdgeSize(val)} style={{ input: { width: 60 } }} />
+            <NumericInput value={edgeSize} onChange={(val) => setEdgeSize(val || undefined)} style={{ input: { width: 60 } }} />
 
             <p>shape: </p>
             <select onChange={handleMenuSelectShape}>
@@ -239,11 +239,13 @@ export function CustomizeArrow() {
     const [lineColor, setLineColor] = useState<string | null>(null);
     const [showArrow, setShowArrow] = useState(true);
     const [showHead, setShowHead] = useState(true);
-    const [headColor, setHeadColor] = useState(null);
+    
+    const [headColor, setHeadColor] = useState<string | null>(null);
     const [headSize, setHeadSize] = useState<number | undefined>(6);
+    
     const [showTail, setShowTail] = useState(false);
-    const [tailColor, setTailColor] = useState(null);
-    const [tailSize, setTailSize] = useState(6);
+    const [tailColor, setTailColor] = useState<string | null>(null);
+    const [tailSize, setTailSize] = useState<number | undefined>(6);
     const [curveness, setCurveness] = useState<number | undefined>(0.8);
     const [strokeWidth, setStrokeWidth] = useState<number | undefined>(4);
     
@@ -253,15 +255,19 @@ export function CustomizeArrow() {
     const [dashed, setDashed] = useState(false);
     const [animation, setAnimation] = useState<number | undefined>(1);
     const [path, setPath] = useState<pathType>('smooth');
+    
     const [startLabel, setStartLabel] = useState("I'm start label");
     const [middleLabel, setMiddleLabel] = useState('middleLabel');
     const [endLabel, setEndLabel] = useState('fancy end label');
+
     const [_extendSVGcanvas, setExtendSVGcanvas] = useState<number | undefined>(0);
     const [_debug, set_Debug] = useState(false);
+
     const [_cpx1Offset, set_Cpx1] = useState<number | undefined>(0);
     const [_cpy1Offset, set_Cpy1] = useState<number | undefined>(0);
     const [_cpx2Offset, set_Cpx2] = useState<number | undefined>(0);
     const [_cpy2Offset, set_Cpy2] = useState<number | undefined>(0);
+
     const [animateDrawing, setAnimateDrawing] = useState<number | undefined>(1);
     const [enableAnimateDrawing, setEnableAnimateDrawing] = useState(false);
     const _animateDrawing = enableAnimateDrawing ? animateDrawing : false;
