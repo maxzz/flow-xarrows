@@ -6,13 +6,16 @@ import Collapsible, { CollapsibleProps } from 'react-collapsible';
 import { boxStyle, centeredFlex } from './ui';
 
 const canvasStyle: CSSProperties = {
+    position: 'relative',
+    margin: '0 0 20px 0',
     width: '100%',
     height: '240px',
+    
+    color: 'black',
     background: 'ghostwhite',
+
     overflow: 'auto',
     display: 'flex',
-    position: 'relative',
-    color: 'black',
 };
 
 const colorOptions = ['red', 'BurlyWood', 'CadetBlue', 'Coral'] as const;
@@ -311,6 +314,17 @@ export function CustomizeArrow() {
 
             {showMe ? (
                 <div>
+                    <div style={canvasStyle} id="canvas">
+                        <Xwrapper>
+                            <Box box={box} />
+                            <Box box={box2} />
+                            {showArrow
+                                ? <Xarrow {...xarrowProps} />
+                                : null
+                            }
+                        </Xwrapper>
+                    </div>
+
                     <CollapsibleDiv title={'anchors'}>
                         <ArrowAnchor anchorName={'startAnchor'} edgeAnchor={startAnchor} setAnchor={setStartAnchor} />
                         <ArrowAnchor anchorName={'endAnchor'} edgeAnchor={endAnchor} setAnchor={setEndAnchor} />
@@ -470,17 +484,7 @@ export function CustomizeArrow() {
                                 step={2} />
                         </Row>
                     </MyCollapsible>
-                    <br />
-                    <div style={canvasStyle} id="canvas">
-                        <Xwrapper>
-                            <Box box={box} />
-                            <Box box={box2} />
-                            {showArrow
-                                ? <Xarrow {...xarrowProps} />
-                                : null
-                            }
-                        </Xwrapper>
-                    </div>
+                    
                     {/*/!* todo: add generated code preview *!/ */}
                     {/*<pre>*/}
                     {/*  <code className="jsx">&lt;Index {}/&gt;</code>*/}
