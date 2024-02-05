@@ -8,12 +8,18 @@ dependencies:
   react:
     specifier: ^18.2.0
     version: 18.2.0
+  react-collapsible:
+    specifier: ^2.10.0
+    version: 2.10.0(react-dom@18.2.0)(react@18.2.0)
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
   react-draggable:
     specifier: ^4.4.6
     version: 4.4.6(react-dom@18.2.0)(react@18.2.0)
+  react-numeric-input:
+    specifier: ^2.2.3
+    version: 2.2.3(react@18.2.0)
   react-xarrows:
     specifier: ^2.0.2
     version: 2.0.2(react@18.2.0)
@@ -25,6 +31,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18.2.17
     version: 18.2.18
+  '@types/react-numeric-input':
+    specifier: ^2.2.7
+    version: 2.2.7
   '@vitejs/plugin-react':
     specifier: ^4.2.1
     version: 4.2.1(vite@5.0.12)
@@ -644,6 +653,12 @@ packages:
       '@types/react': 18.2.52
     dev: true
 
+  /@types/react-numeric-input@2.2.7:
+    resolution: {integrity: sha512-C55RyZCEXxjB13skjVkvxOc6+vTVK4v2vR1hS+foANbntYDz2cIF1zTD90B4oN5qxJsGHQ4ZRN0T381Y3T6YDg==}
+    dependencies:
+      '@types/react': 18.2.52
+    dev: true
+
   /@types/react@18.2.52:
     resolution: {integrity: sha512-E/YjWh3tH+qsLKaUzgpZb5AY0ChVa+ZJzF7ogehVILrFpdQk6nC/WXOv0bfFEABbXbgNxLBGU7IIZByPKb6eBw==}
     dependencies:
@@ -878,6 +893,16 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /react-collapsible@2.10.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-kEVsmlFfXBMTCnU5gwIv19MdmPAhbIPzz5Er37TiJSzRKS0IHrqAKQyQeHEmtoGIQMTcVI46FzE4z3NlVTx77A==}
+    peerDependencies:
+      react: ~15 || ~16 || ~17 || ~18
+      react-dom: ~15 || ~16 || ~17 || ~18
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /react-dom@18.2.0(react@18.2.0):
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
     peerDependencies:
@@ -902,6 +927,14 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
+
+  /react-numeric-input@2.2.3(react@18.2.0):
+    resolution: {integrity: sha512-0hDXY8eznhTNMYfmeXRo/R1Fyx//ub0C/tpXbIeEaTnG72P95MGGMvJbiX5i+mnmiFVT6OCgIR33mke45nNZzQ==}
+    peerDependencies:
+      react: '>=0.14.0 || ^15.6.1 || ^16.0.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-refresh@0.14.0:
