@@ -1,5 +1,5 @@
 import { useState, useRef, HTMLAttributes, ReactNode, CSSProperties } from 'react';
-import Xarrow, { anchorType, arrowShapes, pathType, svgCustomEdgeType, svgEdgeShapeType, useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
+import Xarrow, { anchorNamedType, anchorType, arrowShapes, pathType, svgCustomEdgeType, svgEdgeShapeType, useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
 import Draggable from 'react-draggable';
 import NumericInput from 'react-numeric-input';
 import Collapsible, { CollapsibleProps } from 'react-collapsible';
@@ -31,9 +31,9 @@ const centeredFlex: CSSProperties = {
     justifyContent: 'center',
 };
 
-const colorOptions = ['red', 'BurlyWood', 'CadetBlue', 'Coral'];
+const colorOptions = ['red', 'BurlyWood', 'CadetBlue', 'Coral'] as const;
 const bodyColorOptions = [null, ...colorOptions];
-const anchorsTypes = ['left', 'right', 'top', 'bottom', 'middle', 'auto'];
+const anchorsTypes = ['left', 'right', 'top', 'bottom', 'middle', 'auto'] as const;
 
 // one row div with elements centered
 const Div = ({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) => {
@@ -87,7 +87,11 @@ const Box = (props: { box: BoxPos; }) => {
     );
 };
 
-const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: { anchorName: string, edgeAnchor: string[], setAnchor: React.Dispatch<React.SetStateAction<string[]>>; }) => {
+const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: {
+    anchorName: string;
+    edgeAnchor: anchorNamedType[];
+    setAnchor: React.Dispatch<React.SetStateAction<anchorNamedType[]>>;
+}) => {
     return (
         <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
             <p>{anchorName}: </p>
@@ -171,7 +175,7 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
     return (
         <Div title={'arrow ' + edgeName}>
             <b>{edgeName}: </b>
-            
+
             <p>show: </p>
             <input
                 type="checkBox"
@@ -179,14 +183,14 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
                 onChange={(e) => setShowEdge(e.target.checked)}
                 style={{ height: '15px', width: '15px' }}
             />
-            
+
             <p> color: </p>
             <select style={{ marginRight: 10 }} onChange={(e) => setEdge(e.target.value)}>
                 {bodyColorOptions.map((o, i) => (
                     <option key={i}>{o}</option>
                 ))}
             </select>
-            
+
             <p>size: </p>
             <NumericInput value={edgeSize} onChange={(val) => setEdgeSize(val)} style={{ input: { width: 60 } }} />
 
@@ -214,7 +218,7 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
     );
 };
 
-const ArrowLabel = ({ labelName, label, setLabel }) => {
+const ArrowLabel = ({ labelName, label, setLabel }: { labelName: string; label: string; setLabel: (v: string) => void; }) => {
     return (
         <Div>
             <p>{labelName} label:</p>
@@ -242,8 +246,10 @@ export function CustomizeArrow() {
     const [tailSize, setTailSize] = useState(6);
     const [curveness, setCurveness] = useState<number | undefined>(0.8);
     const [strokeWidth, setStrokeWidth] = useState<number | undefined>(4);
-    const [startAnchor, setStartAnchor] = useState<anchorType>(['auto']);
-    const [endAnchor, setEndAnchor] = useState<anchorType>(['auto']);
+    
+    const [startAnchor, setStartAnchor] = useState<anchorNamedType[]>(['auto']);
+    const [endAnchor, setEndAnchor] = useState<anchorNamedType[]>(['auto']);
+    
     const [dashed, setDashed] = useState(false);
     const [animation, setAnimation] = useState<number | undefined>(1);
     const [path, setPath] = useState<pathType>('smooth');
@@ -270,7 +276,7 @@ export function CustomizeArrow() {
         // this is the important part of the example! play with the props to understand better the API options
         start: 'box1', //  can be string
         end: box2.ref, //  or reference
-        startAnchor: startAnchor || [],
+        startAnchor: startAnchor,
         endAnchor: endAnchor,
         curveness: Number(curveness),
         color: color,
@@ -316,8 +322,8 @@ export function CustomizeArrow() {
             {showMe ? (
                 <div>
                     <CollapsibleDiv title={'anchors'}>
-                        <ArrowAnchor edgeAnchor={startAnchor} anchorName={'startAnchor'} setAnchor={setStartAnchor} />
-                        <ArrowAnchor edgeAnchor={endAnchor} anchorName={'endAnchor'} setAnchor={setEndAnchor} />
+                        <ArrowAnchor anchorName={'startAnchor'} edgeAnchor={startAnchor} setAnchor={setStartAnchor} />
+                        <ArrowAnchor anchorName={'endAnchor'} edgeAnchor={endAnchor} setAnchor={setEndAnchor} />
                     </CollapsibleDiv>
 
                     <MyCollapsible title={'arrow apearance'} open={true}>
@@ -363,7 +369,7 @@ export function CustomizeArrow() {
                                 onChange={(e) => setDashed(e.target.checked)} />
 
                             <p>path: </p>
-                            <select onChange={(e) => setPath(e.target.value)}>
+                            <select onChange={(e) => setPath(e.target.value as pathType)}>
                                 {['smooth', 'grid', 'straight'].map((o, i) => (
                                     <option key={i}>{o}</option>
                                 ))}
