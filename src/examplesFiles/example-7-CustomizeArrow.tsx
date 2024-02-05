@@ -118,26 +118,33 @@ const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: { anchorName: string
     );
 };
 
+type ArrowShapeType = {
+    svgElem: JSX.Element;
+    offsetForward: number;
+
+};
+type ArrowShapeKeys = keyof typeof arrowShapes;
+
 const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShowEdge, edgeShape, setEdgeShape }: {
     edgeName: string;
     setEdge: (v: string) => void;
     edgeSize: number;
-    setEdgeSize: (v: number) => void;
+    setEdgeSize: (v: number | null) => void;
     showEdge: boolean;
     setShowEdge: (v: boolean) => void;
-    edgeShape: string; 
-    setEdgeShape: (v: string) => void;
+    edgeShape: string;
+    setEdgeShape: (v: ArrowShapeType | ArrowShapeKeys) => void;
 }
 ) => {
-    const shapes = Object.keys(arrowShapes) as Array<keyof typeof arrowShapes>;
-    const [selectedShape, setSelectedShape] = useState(shapes[0]);
+    const predefinedShapes = Object.keys(arrowShapes) as ArrowShapeKeys[];
+    const [selectedShape, setSelectedShape] = useState<ArrowShapeKeys>(predefinedShapes[0]);
     const [adv, setAdv] = useState(false);
 
-    const [edgeOffset, setEdgeOffset] = useState<number>(arrowShapes[shapes[0]].offsetForward);
-    const [svgElem, setSvgElem] = useState(arrowShapes[shapes[0]].svgElem);
+    const [edgeOffset, setEdgeOffset] = useState<number>(arrowShapes[predefinedShapes[0]].offsetForward);
+    const [svgElem, setSvgElem] = useState(arrowShapes[predefinedShapes[0]].svgElem);
 
-    function handleMenuSelectShape(e) {
-        const selectedShape = e.target.value;
+    function handleMenuSelectShape(e: React.ChangeEvent<HTMLSelectElement>) {
+        const selectedShape = e.target.value as ArrowShapeKeys;
         setSelectedShape(selectedShape);
         update({ shape: selectedShape });
     }
@@ -164,26 +171,28 @@ const ArrowEdge = ({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
     return (
         <Div title={'arrow ' + edgeName}>
             <b>{edgeName}: </b>
+            
             <p>show: </p>
             <input
-                style={{ height: '15px', width: '15px' }}
                 type="checkBox"
                 checked={showEdge}
-                onChange={(e) => {
-                    setShowEdge(e.target.checked);
-                }}
+                onChange={(e) => setShowEdge(e.target.checked)}
+                style={{ height: '15px', width: '15px' }}
             />
+            
             <p> color: </p>
             <select style={{ marginRight: 10 }} onChange={(e) => setEdge(e.target.value)}>
                 {bodyColorOptions.map((o, i) => (
                     <option key={i}>{o}</option>
                 ))}
             </select>
+            
             <p>size: </p>
             <NumericInput value={edgeSize} onChange={(val) => setEdgeSize(val)} style={{ input: { width: 60 } }} />
+
             <p>shape: </p>
             <select onChange={handleMenuSelectShape}>
-                {shapes.map((o, i) => (
+                {predefinedShapes.map((o, i) => (
                     <option key={i}>{o}</option>
                 ))}
             </select>
