@@ -1,5 +1,5 @@
 import { useState, useRef, HTMLAttributes, ReactNode, CSSProperties } from 'react';
-import Xarrow, { arrowShapes, useXarrow, Xwrapper } from 'react-xarrows';
+import Xarrow, { anchorType, arrowShapes, pathType, svgCustomEdgeType, svgEdgeShapeType, useXarrow, xarrowPropsType, Xwrapper } from 'react-xarrows';
 import Draggable from 'react-draggable';
 import NumericInput from 'react-numeric-input';
 import Collapsible, { CollapsibleProps } from 'react-collapsible';
@@ -60,7 +60,7 @@ const MyCollapsible = ({ children, style = {}, title = 'title', ...rest }: { chi
 };
 
 // not in single line
-const CollapsibleDiv = ({ children, style = {}, title = 'title', ...rest }: { children?: ReactNode; style?: CSSProperties; title?: string; } & Omit<CollapsibleProps, 'trigger'>) => {
+const CollapsibleDiv = ({ children, style = {}, title = 'title', ...rest }: { children?: ReactNode; style?: CSSProperties; title?: string; } & HTMLAttributes<HTMLDivElement>) => {
     return (
         <Collapsible
             open={false}
@@ -76,7 +76,7 @@ const CollapsibleDiv = ({ children, style = {}, title = 'title', ...rest }: { ch
     );
 };
 
-const Box = (props) => {
+const Box = (props: { box: BoxPos; }) => {
     const updateXarrow = useXarrow();
     return (
         <Draggable onDrag={updateXarrow} onStop={updateXarrow}>
@@ -99,7 +99,8 @@ const ArrowAnchor = ({ anchorName, edgeAnchor, setAnchor }: { anchorName: string
                             display: 'flex',
                             alignItems: 'center',
                             height: 25,
-                        }}>
+                        }}
+                    >
                         <p>{anchor}</p>
                         <input
                             style={{ height: '15px', width: '15px' }}
@@ -209,63 +210,54 @@ const ArrowLabel = ({ labelName, label, setLabel }) => {
     );
 };
 
+type BoxPos = { id: string, x: number, y: number; ref: any; };
+
 export function CustomizeArrow() {
     const [showMe, setShowMe] = useState(true);
 
-    const box = {
-        id: 'box1',
-        x: 20,
-        y: 20,
-        ref: useRef(null),
-    };
-
-    const box2 = {
-        id: 'box2',
-        x: 320,
-        y: 120,
-        ref: useRef(null),
-    };
+    const box: BoxPos = { id: 'box1', x: 20, y: 20, ref: useRef(null), };
+    const box2: BoxPos = { id: 'box2', x: 320, y: 120, ref: useRef(null), };
 
     const [color, setColor] = useState('red');
-    const [lineColor, setLineColor] = useState(null);
+    const [lineColor, setLineColor] = useState<string | null>(null);
     const [showArrow, setShowArrow] = useState(true);
     const [showHead, setShowHead] = useState(true);
     const [headColor, setHeadColor] = useState(null);
-    const [headSize, setHeadSize] = useState(6);
+    const [headSize, setHeadSize] = useState<number | undefined>(6);
     const [showTail, setShowTail] = useState(false);
     const [tailColor, setTailColor] = useState(null);
     const [tailSize, setTailSize] = useState(6);
-    const [curveness, setCurveness] = useState(0.8);
-    const [strokeWidth, setStrokeWidth] = useState(4);
-    const [startAnchor, setStartAnchor] = useState(['auto']);
-    const [endAnchor, setEndAnchor] = useState(['auto']);
+    const [curveness, setCurveness] = useState<number | undefined>(0.8);
+    const [strokeWidth, setStrokeWidth] = useState<number | undefined>(4);
+    const [startAnchor, setStartAnchor] = useState<anchorType>(['auto']);
+    const [endAnchor, setEndAnchor] = useState<anchorType>(['auto']);
     const [dashed, setDashed] = useState(false);
-    const [animation, setAnimation] = useState(1);
-    const [path, setPath] = useState('smooth');
+    const [animation, setAnimation] = useState<number | undefined>(1);
+    const [path, setPath] = useState<pathType>('smooth');
     const [startLabel, setStartLabel] = useState("I'm start label");
     const [middleLabel, setMiddleLabel] = useState('middleLabel');
     const [endLabel, setEndLabel] = useState('fancy end label');
-    const [_extendSVGcanvas, setExtendSVGcanvas] = useState(0);
+    const [_extendSVGcanvas, setExtendSVGcanvas] = useState<number | undefined>(0);
     const [_debug, set_Debug] = useState(false);
-    const [_cpx1Offset, set_Cpx1] = useState(0);
-    const [_cpy1Offset, set_Cpy1] = useState(0);
-    const [_cpx2Offset, set_Cpx2] = useState(0);
-    const [_cpy2Offset, set_Cpy2] = useState(0);
-    const [animateDrawing, setAnimateDrawing] = useState(1);
+    const [_cpx1Offset, set_Cpx1] = useState<number | undefined>(0);
+    const [_cpy1Offset, set_Cpy1] = useState<number | undefined>(0);
+    const [_cpx2Offset, set_Cpx2] = useState<number | undefined>(0);
+    const [_cpy2Offset, set_Cpy2] = useState<number | undefined>(0);
+    const [animateDrawing, setAnimateDrawing] = useState<number | undefined>(1);
     const [enableAnimateDrawing, setEnableAnimateDrawing] = useState(false);
     const _animateDrawing = enableAnimateDrawing ? animateDrawing : false;
-    const [headShape, setHeadShape] = useState(Object.keys(arrowShapes)[0]);
-    const [tailShape, setTailShape] = useState(Object.keys(arrowShapes)[0]);
+    const [headShape, setHeadShape] = useState<svgEdgeShapeType | svgCustomEdgeType>(Object.keys(arrowShapes)[0] as svgEdgeShapeType);
+    const [tailShape, setTailShape] = useState<svgEdgeShapeType | svgCustomEdgeType>(Object.keys(arrowShapes)[0] as svgEdgeShapeType);
     // const [headOffset, setHeadOffset] = useState(0.25);
     // const [tailOffset, setTailOffset] = useState(0.25);
     // const headShape = { ...arrowShapes[headShape], ...{ offsetForward: headOffset } };
     // console.log(headOffset);
 
-    const props = {
+    const xarrowProps: xarrowPropsType = {
         // this is the important part of the example! play with the props to understand better the API options
         start: 'box1', //  can be string
         end: box2.ref, //  or reference
-        startAnchor: startAnchor,
+        startAnchor: startAnchor || [],
         endAnchor: endAnchor,
         curveness: Number(curveness),
         color: color,
@@ -284,11 +276,7 @@ export function CustomizeArrow() {
         labels: {
             start: startLabel,
             middle: middleLabel,
-            end: (
-                <div style={{ fontSize: '1.3em', fontFamily: 'fantasy', fontStyle: 'italic', color: 'purple', }}>
-                    {endLabel}
-                </div>
-            ),
+            end: (<div style={{ fontSize: '1.3em', fontFamily: 'fantasy', fontStyle: 'italic', color: 'purple', }}> {endLabel} </div>),
         },
         _extendSVGcanvas,
         _debug,
@@ -302,16 +290,16 @@ export function CustomizeArrow() {
     return (
         <div>
             <h3>
-                <u>Example2:</u>
+                Example2:
             </h3>
             <p>
-                {' '}
                 This example shows some of the main API options. give the arrow diffrent properties to customize his look. note
                 that some options are cannot be changed though this GUI(like custom lables or advande dashness and more) play
                 with them directly at this codesandbox!.
             </p>
 
             {/*<button onClick={() => setShowMe(!showMe)}>toggle</button>*/}
+
             {showMe ? (
                 <div>
                     <CollapsibleDiv title={'anchors'}>
@@ -338,7 +326,7 @@ export function CustomizeArrow() {
                             <p>strokeWidth: </p>
                             <NumericInput
                                 value={strokeWidth}
-                                onChange={(val) => setStrokeWidth(val)}
+                                onChange={(val) => setStrokeWidth(val || undefined)}
                                 style={{ input: { width: 60 } }}
                             />
                         </Div>
@@ -346,13 +334,13 @@ export function CustomizeArrow() {
                             <p>curveness: </p>
                             <NumericInput
                                 value={curveness}
-                                onChange={(val) => setCurveness(val)}
+                                onChange={(val) => setCurveness(val || undefined)}
                                 step={0.1}
                                 style={{ input: { width: 60 } }}
                             />
 
                             <p>animation: </p>
-                            <NumericInput value={animation} onChange={(val) => setAnimation(val)} style={{ input: { width: 60 } }} />
+                            <NumericInput value={animation} onChange={(val) => setAnimation(val || undefined)} style={{ input: { width: 60 } }} />
 
                             <p>dashed: </p>
                             <input
@@ -413,7 +401,7 @@ export function CustomizeArrow() {
                             />
                             <NumericInput
                                 value={animateDrawing}
-                                onChange={(val) => setAnimateDrawing(val)}
+                                onChange={(val) => setAnimateDrawing(val || undefined)}
                                 style={{ input: { width: 60 } }}
                                 step={0.2}
                             />
@@ -431,7 +419,7 @@ export function CustomizeArrow() {
                             <p>_extendSVGcanvas: </p>
                             <NumericInput
                                 value={_extendSVGcanvas}
-                                onChange={(val) => setExtendSVGcanvas(val)}
+                                onChange={(val) => setExtendSVGcanvas(val || undefined)}
                                 style={{ input: { width: 70 } }} />
                             <p>_debug</p>
                             <input
@@ -447,28 +435,28 @@ export function CustomizeArrow() {
                             <p>_cpx1Offset: </p>
                             <NumericInput
                                 value={_cpx1Offset}
-                                onChange={(val) => set_Cpx1(val)}
+                                onChange={(val) => set_Cpx1(val || undefined)}
                                 style={{ input: { width: 70 } }}
                                 step={2} />
 
                             <p>_cpy1Offset: </p>
                             <NumericInput
                                 value={_cpy1Offset}
-                                onChange={(val) => set_Cpy1(val)}
+                                onChange={(val) => set_Cpy1(val || undefined)}
                                 style={{ input: { width: 70 } }}
                                 step={2} />
 
                             <p>_cpx2Offset: </p>
                             <NumericInput
                                 value={_cpx2Offset}
-                                onChange={(val) => set_Cpx2(val)}
+                                onChange={(val) => set_Cpx2(val || undefined)}
                                 style={{ input: { width: 70 } }}
                                 step={2} />
 
                             <p>_cpy2Offset: </p>
                             <NumericInput
                                 value={_cpy2Offset}
-                                onChange={(val) => set_Cpy2(val)}
+                                onChange={(val) => set_Cpy2(val || undefined)}
                                 style={{ input: { width: 70 } }}
                                 step={2} />
                         </Div>
@@ -478,7 +466,10 @@ export function CustomizeArrow() {
                         <Xwrapper>
                             <Box box={box} />
                             <Box box={box2} />
-                            {showArrow ? <Xarrow {...props} /> : null}
+                            {showArrow
+                                ? <Xarrow {...xarrowProps} />
+                                : null
+                            }
                         </Xwrapper>
                     </div>
                     {/*/!* todo: add generated code preview *!/ */}
