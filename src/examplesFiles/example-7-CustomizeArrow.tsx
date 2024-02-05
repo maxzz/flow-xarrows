@@ -31,28 +31,30 @@ function Row({ children, style = {}, ...rest }: HTMLAttributes<HTMLDivElement>) 
     );
 }
 
-function MyCollapsible({ children, title, ...rest }: { children?: ReactNode; title: string; } & Omit<CollapsibleProps, 'trigger'>) {
+function MyCollapsible({ children, title, open = false, ...rest }: { children?: ReactNode; title: string; open?: boolean; } & HTMLAttributes<HTMLDivElement>) {
     return (
         <Collapsible
-            open={false}
+            open={open}
             trigger={<div className="collapsible-title">{title}</div>}
             triggerTagName="div"
             triggerStyle={{ ...centeredFlex, ...{ cursor: 'pointer', borderBottom: '1px #272e45 solid', } }}
             containerElementProps={{ style: { backgroundColor: "#ebeef9", border: '1px #5b6aa0 solid', }, }}
             transitionTime={100}
-            // style={{ color: 'red' }}
-            // {...rest}
+        // style={{ color: 'red' }}
+        // {...rest}
         >
-            {children}
+            <div style={{ padding: '0.5rem 1rem' }}>
+                {children}
+            </div>
         </Collapsible>
     );
 }
 
 // not in single line
-function CollapsibleDiv({ children, title = 'title', ...rest }: { children?: ReactNode; title?: string; } & HTMLAttributes<HTMLDivElement>) {
+function CollapsibleDiv({ children, title = 'title', open = false, ...rest }: { children?: ReactNode; title: string; open?: boolean; } & HTMLAttributes<HTMLDivElement>) {
     return (
         <Collapsible
-            open={false}
+            open={open}
             trigger={<div className="collapsible-title">{title}</div>}
             triggerTagName="div"
             triggerStyle={{ ...centeredFlex, ...{ cursor: 'pointer', borderBottom: '1px #272e45 solid', } }}
@@ -164,8 +166,8 @@ function ArrowEdge({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
         <Row title={'arrow ' + edgeName} style={{ marginTop: 12, justifyContent: "start" }}>
             <div style={{ width: "50px", fontWeight: 700, textTransform: "capitalize" }}>{edgeName}</div>
 
-            <div style={{ flexGrow: 1, display:"flex", gap: 12 }}>
-                <div style={{display:"flex",alignItems:"center"}}>
+            <div style={{ flexGrow: 1, display: "flex", gap: 12 }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
                     <input
                         type="checkBox"
                         checked={showEdge}
@@ -216,11 +218,13 @@ function ArrowEdge({ edgeName, setEdge, edgeSize, setEdgeSize, showEdge, setShow
     );
 }
 
-const ArrowLabel = ({ labelName, label, setLabel }: { labelName: string; label: string; setLabel: (v: string) => void; }) => {
+const ArrowLabels = ({ labelName, label, setLabel }: { labelName: string; label: string; setLabel: (v: string) => void; }) => {
     return (
         <Row>
-            <p>{labelName} label:</p>
-            <input style={{ width: '120px' }} type="text" value={label} onChange={(e) => setLabel(e.target.value)} />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                <div>{labelName} label:</div>
+                <input style={{ width: 120 }} value={label} onChange={(e) => setLabel(e.target.value)} />
+            </div>
         </Row>
     );
 };
@@ -254,9 +258,9 @@ export function CustomizeArrow() {
     const [animation, setAnimation] = useState<number | undefined>(1);
     const [path, setPath] = useState<pathType>('smooth');
 
-    const [startLabel, setStartLabel] = useState("I'm start label");
-    const [middleLabel, setMiddleLabel] = useState('middleLabel');
-    const [endLabel, setEndLabel] = useState('fancy end label');
+    const [startLabel, setStartLabel] = useState("start");
+    const [middleLabel, setMiddleLabel] = useState('middle');
+    const [endLabel, setEndLabel] = useState('end');
 
     const [_extendSVGcanvas, setExtendSVGcanvas] = useState<number | undefined>(0);
     const [_debug, set_Debug] = useState(false);
@@ -299,7 +303,7 @@ export function CustomizeArrow() {
         labels: {
             start: startLabel,
             middle: middleLabel,
-            end: (<div style={{ fontSize: '1.3em', fontFamily: 'fantasy', fontStyle: 'italic', color: 'purple', }}> {endLabel} </div>),
+            end: (<div style={{ fontWeight: 'bold', color: 'purple', transform: "scaleY(2)" }}> {endLabel} </div>),
         },
         _extendSVGcanvas,
         _debug,
@@ -442,10 +446,10 @@ export function CustomizeArrow() {
                         </Row>
                     </MyCollapsible>
 
-                    <CollapsibleDiv title="Labels">
-                        <ArrowLabel labelName="start" label={startLabel} setLabel={setStartLabel} />
-                        <ArrowLabel labelName="middle" label={middleLabel} setLabel={setMiddleLabel} />
-                        <ArrowLabel labelName="end" label={endLabel} setLabel={setEndLabel} />
+                    <CollapsibleDiv title="Labels" style={{ padding: "0.5rem 0", flexDirection: "column", gap: 12 }}>
+                        <ArrowLabels labelName="start" label={startLabel} setLabel={setStartLabel} />
+                        <ArrowLabels labelName="middle" label={middleLabel} setLabel={setMiddleLabel} />
+                        <ArrowLabels labelName="end" label={endLabel} setLabel={setEndLabel} />
                     </CollapsibleDiv>
 
                     <MyCollapsible title="Advanced">
